@@ -1,9 +1,9 @@
-# Facebook Messenger Bot integrated with Watson Assistant
+# Facebook Messenger Bot with Watson Assistant integration
 
 This example project creates a Facebook Messenger bot, completely
 mirroring the quickstart located in [Messenger Platform docs](https://developers.facebook.com/docs/messenger-platform/guides/quick-start).
 
-It is a remix from the original Facebook Messenger Bot Glitch project, but that integrates Watson Assistant. 
+It is a remix from the original Facebook Messenger Bot Glitch project, but that integrates Watson Assistant.
 
 ## Getting Started
 To get started you need to:
