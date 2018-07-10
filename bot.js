@@ -74,8 +74,7 @@ app.post('/webhook', function (req, res) {
                     console.log(err);
                     return res.status(err.code || 500).json(err);
                   }
-                  receivedMessage(event, updateMessage(payload, data));
-                  //return res.json(u);
+                  return res.json(updateMessage(payload, data));
               });
         } else if (event.postback) {
           console.log("Received postback");
@@ -91,12 +90,11 @@ app.post('/webhook', function (req, res) {
     // You must send back a 200, within 20 seconds, to let us know
     // you've successfully received the callback. Otherwise, the request
     // will time out and we will keep trying to resend.
-    res.sendStatus(200);
   }
 });
 
 // Incoming events handling
-function receivedMessage(event, Wat) {
+function receivedMessage(event, watsonResponse) {
   var senderID = event.sender.id;
   var recipientID = event.recipient.id;
   var timeOfMessage = event.timestamp;
@@ -110,6 +108,7 @@ function receivedMessage(event, Wat) {
 
   var messageText = message.text;
   var messageAttachments = message.attachments;
+  
 
   if (messageText) {
     // If we receive a text message, check to see if it matches a keyword
@@ -120,7 +119,7 @@ function receivedMessage(event, Wat) {
         break;
 
       default:
-        sendTextMessage(senderID, response);
+        sendTextMessage(senderID, watsonResponse.output.text[0]);
     }
   } else if (messageAttachments) {
     sendTextMessage(senderID, "Message with attachment received");
