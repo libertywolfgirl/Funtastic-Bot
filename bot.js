@@ -6,9 +6,9 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const request = require('request');
 const path = require('path');
-const AssistantV1 = require('watson-developer-cloud/assistant/v1'); // watson sdk
+const Watson = require('watson-developer-cloud'); // watson sdk
 
-const assistant = new AssistantV1({
+const assistant = new Watson.ConversationV1({
             username: process.env.ASSISTANT_USERNAME,
             password: process.env.ASSISTANT_PASSWORD,
             url: process.env.ASSISTANT_URL,
@@ -74,7 +74,6 @@ app.post('/webhook', function (req, res) {
                     console.log(err);
                     return res.status(err.code || 500).json(err);
                   }
-                  console.log("Here");
                   return res.json(updateMessage(payload, data));
               });
         } else if (event.postback) {
@@ -230,13 +229,19 @@ function callSendAPI(messageData) {
 }
 
 function updateMessage(input, response) {
+  console.log("response");
+  console.log(response);
+  console.log("yes" + !response.output);
   var responseText = null;
   if (!response.output) {
+    console.log("output isn't null");
     response.output = {};
   } else {
+    console.log("output is null");
     return response;
   }
   if (response.intents && response.intents[0]) {
+    console.log("intent detected");
     var intent = response.intents[0];
     // Depending on the confidence of the response the app can return different messages.
     // The confidence will vary depending on how well the system is trained. The service will always try to assign
