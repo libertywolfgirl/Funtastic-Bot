@@ -2,53 +2,33 @@ const AssistantV1 = require('watson-developer-cloud/assistant/v1'); // watson sd
 
 const ConversationService = (function() {
     const _initService = () => {
-        const credentials = process.env.WATSON_CONVERSATION_SERVICE_NAME;
         return new AssistantV1({
-            username: .username,
-            password: credentials.password,
-            url: credentials.url,
+            username: process.env.ASSISTANT_USERNAME,
+            password: process.env.ASSISTANT_PASSWORD,
+            url: process.env.ASSISTANT_URL,
             version: 'v1',
             version_date: '2017-05-26'
         });
     };
     return {
-        sendMessage: function(message, context, success) {
-            ConversationHooks.before(context, message, () => {
+        sendMessage: function(message, context) {
                 const conversation = _initService();
-                const workspaceID = (context.searchStations == true) ? "searchStations" : context.language;
+                const workspaceID = process.env.ASSISTANT_WORKSPACEID;
                 conversation.message(
                     {
-                        workspace_id: EnvSettings.getWatsonWorkspace(workspaceID),
+                        workspace_id: workspaceID,
                         input: { text: (message.text || '').replace(/(\r\n\t|\n|\r\t)/gm, '') },
                         context: context
                     },
-                    function(err, response) {
-                        if (err) {
-                            /* eslint-disable no-console */
-                            console.log('[ERROR] ConversationService.sendMessage');
-                            console.log(err);
-                            /* eslint-enable no-console */
-                        }
-                        const overrideIntent = get(response, 'context.intent');
-                        if (overrideIntent) {
-                            response.intents = [{ intent: overrideIntent, confidence: 1 }];
-                            delete response.context.intent;
-                        }
-                        ConversationHooks.after(response, message, afterResponse => {
-                            if (afterResponse && afterResponse.fetchConversation) {
-                                const fetchMessage = afterResponse.fetchMessage || '';
-                                delete afterResponse.fetchConversation;
-                                delete afterResponse.fetchMessage;
-                                ConversationService.sendMessage({ text: fetchMessage }, afterResponse.context, success);
-                            } else {
-                                success(afterResponse);
-                            }
-                        });
-                    }
                 );
-            });
+                assistant.message(payload, function (err, data) {
+                  if (err) {
+                    return res.status(err.code || 500).json(err);
+                  }
+                  return res.json(updateMessage(payload, data));
+              });
+            }
         }
-    };
 })();
 
 module.exports = ConversationService;
