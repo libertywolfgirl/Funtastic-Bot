@@ -64,7 +64,6 @@ app.post('/webhook', function (req, res) {
           const workspaceID = process.env.ASSISTANT_WORKSPACEID;
           var payload = {
             workspace_id: workspaceID,
-            context: req.body.context,
             input: event.message
           };
           assistant.message(payload, function (err, data) {
