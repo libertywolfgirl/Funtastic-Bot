@@ -63,19 +63,18 @@ app.post('/webhook', function (req, res) {
           console.log("Received message");
           const workspaceID = process.env.ASSISTANT_WORKSPACEID;
           var payload = {
-                  workspace_id: workspaceID,
-                  context: req.body.context,
-                  input: event.message
+            workspace_id: workspaceID,
+            context: req.body.context,
+            input: event.message
           };
-                assistant.message(payload, function (err, data) {
-                  if (err) {
-                    console.log("error");
-                    console.log(err);
-                    return res.status(err.code || 500).json(err);
-                  }
-                  receivedMessage(event, updateMessage(payload, data));
-                  
-              });
+          assistant.message(payload, function (err, data) {
+            if (err) {
+              console.log("error");
+              console.log(err);
+              return res.status(err.code || 500).json(err);
+            }
+            receivedMessage(event, data);      
+          });
         } else {
           console.log("Webhook received unknown event: ", event);
         }
@@ -103,10 +102,7 @@ function receivedMessage(event, watsonResponse) {
   console.log(JSON.stringify(message));
 
   var messageId = message.mid;
-
   var messageText = message.text;
-  var messageAttachments = message.attachments;
-  
 
   if (messageText) {
     sendTextMessage(senderID, watsonResponse.output.text[0]);
@@ -149,42 +145,6 @@ function callSendAPI(messageData) {
       console.error(error);
     }
   });  
-}
-
-function updateMessage(input, response) {
-  console.log("response");
-  console.log(response);
-  console.log("yes" + !response.output);
-  var responseText = null;
-  //if (!response.output) {
-  //  console.log("output isn't null");
-  //  response.output = {};
-  // } else {
-  //  console.log("output is null");
-  //  return response;
-  // }
-  
-  
-  
-  if (response.intents && response.intents[0]) {
-    console.log("intent detected");
-    var intent = response.intents[0];
-    // Depending on the confidence of the response the app can return different messages.
-    // The confidence will vary depending on how well the system is trained. The service will always try to assign
-    // a class/intent to the input. If the confidence is low, then it suggests the service is unsure of the
-    // user's intent . In these cases it is usually best to return a disambiguation message
-    // ('I did not understand your intent, please rephrase your question', etc..)
-    if (intent.confidence >= 0.75) {
-      responseText = 'I understood your intent was ' + intent.intent;
-    } else if (intent.confidence >= 0.5) {
-      responseText = 'I think your intent was ' + intent.intent;
-    } else {
-      responseText = 'I did not understand your intent';
-    }
-  }
-  //console.log("Result " + responseText);
-  //response.output.text = responseText;
-  return response;
 }
 
 // Set Express to listen out for HTTP requests
