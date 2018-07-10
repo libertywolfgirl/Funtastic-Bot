@@ -2,7 +2,61 @@ dependencies:
   body-parser: 1.18.2
   express: 4.16.3
   request: 2.85.0
+  watson-developer-cloud: 3.5.3
 packages:
+  /@types/caseless/0.12.1:
+    dev: false
+    resolution:
+      integrity: sha512-FhlMa34NHp9K5MY1Uz8yb+ZvuX0pnvn3jScRSNAb75KHGB8d3rEU6hqMs3Z2vjuytcMfRg6c5CHMc3wtYyD2/A==
+  /@types/csv-stringify/1.4.2:
+    dependencies:
+      '@types/node': 10.5.2
+    dev: false
+    resolution:
+      integrity: sha512-OxBpngVW09fD5S90Fi2ihWJa9gWk/cYSeZ05T5PiElOJw4OjKq9bXyVEkEPpHS/1Vr/gKzAgv7okuvHLpb5CSA==
+  /@types/extend/3.0.0:
+    dev: false
+    resolution:
+      integrity: sha512-Eo8NQCbgjlMPQarlFAE3vpyCvFda4dg1Ob5ZJb6BJI9x4NAZVWowyMNB8GJJDgDI4lr2oqiQvXlPB0Fn1NoXnQ==
+  /@types/file-type/5.2.1:
+    dependencies:
+      '@types/node': 10.5.2
+    dev: false
+    resolution:
+      integrity: sha512-Im0cJaIPJbbpuW91OrjXnqWPZCJK/tcFy2cFX+1qjG1gubgVZPPO9OVsTVAjotN4I1E6FAV0eIqt+rR8Y1c3iA==
+  /@types/form-data/2.2.1:
+    dependencies:
+      '@types/node': 10.5.2
+    dev: false
+    resolution:
+      integrity: sha512-JAMFhOaHIciYVh8fb5/83nmuO/AHwmto+Hq7a9y8FzLDcC1KCU344XDOMEmahnrTFlHjgh4L0WJFczNIX2GxnQ==
+  /@types/is-stream/1.1.0:
+    dependencies:
+      '@types/node': 10.5.2
+    dev: false
+    resolution:
+      integrity: sha512-jkZatu4QVbR60mpIzjINmtS1ZF4a/FqdTUTBeQDVOQ2PYyidtwFKr0B5G6ERukKwliq+7mIXvxyppwzG5EgRYg==
+  /@types/node/10.3.6:
+    dev: false
+    resolution:
+      integrity: sha512-h7VDRFL8IhdPw1JjiNVvhr+WynfKW09q2BOflIOA0yeuXNeXBP1bIRuBrysSryH4keaJ5bYUNp63aIyQL9YpDQ==
+  /@types/node/10.5.2:
+    dev: false
+    resolution:
+      integrity: sha512-m9zXmifkZsMHZBOyxZWilMwmTlpC8x5Ty360JKTiXvlXZfBWYpsg9ZZvP/Ye+iZUh+Q+MxDLjItVTWIsfwz+8Q==
+  /@types/request/2.47.1:
+    dependencies:
+      '@types/caseless': 0.12.1
+      '@types/form-data': 2.2.1
+      '@types/node': 10.5.2
+      '@types/tough-cookie': 2.3.3
+    dev: false
+    resolution:
+      integrity: sha512-TV3XLvDjQbIeVxJ1Z3oCTDk/KuYwwcNKVwz2YaT0F5u86Prgc4syDAp6P96rkTQQ4bIdh+VswQIC9zS6NjY7/g==
+  /@types/tough-cookie/2.3.3:
+    dev: false
+    resolution:
+      integrity: sha512-MDQLxNFRLasqS4UlkWMSACMKeSm1x4Q3TxzUC7KQUsh6RK1ZrQ0VEyE3yzXcBu+K8ejVj4wuX32eUG02yNp+YQ==
   /accepts/1.3.5:
     dependencies:
       mime-types: 2.1.18
@@ -35,6 +89,12 @@ packages:
       node: '>=0.8'
     resolution:
       integrity: sha1-8S4PPF13sLHN2RRpQuTpbB5N1SU=
+  /async/2.6.1:
+    dependencies:
+      lodash: 4.17.10
+    dev: false
+    resolution:
+      integrity: sha512-fNEiL2+AZt6AlAw/29Cr0UDe4sRAHCpEHh54WMz+Bb7QfNcFw4h3loofyJpLeQs4Yx7yuqu/2dLgM5hKOs6HlQ==
   /asynckit/0.4.0:
     dev: false
     resolution:
@@ -47,6 +107,10 @@ packages:
     dev: false
     resolution:
       integrity: sha1-g+9cqGCysy5KDe7e6MdxudtXRx4=
+  /aws4/1.7.0:
+    dev: false
+    resolution:
+      integrity: sha512-32NDda82rhwD9/JBCCkB+MRYDp0oSvlo2IL6rQWA10PQi7tDUM3eqMSltXmY+Oyl/7N3P3qNtAlv7X0d9bI28w==
   /bcrypt-pbkdf/1.0.1:
     dependencies:
       tweetnacl: 0.14.5
@@ -87,6 +151,10 @@ packages:
       node: '>=4.0.0'
     resolution:
       integrity: sha512-Z5BTk6ZRe4tXXQlkqftmsAUANpXmuwlsF5Oov8ThoMbQRzdGTA1ngYRW160GexgOgjsFOKJz0LYhoNi+2AMBUw==
+  /buffer-from/1.1.0:
+    dev: false
+    resolution:
+      integrity: sha512-c5mRlguI/Pe2dSZmpER62rSCu0ryKmWddzRYsuXc50U2/g8jMOulc31VZMa4mYx31U5xsmSOpDCgH88Vl9cDGQ==
   /bytes/3.0.0:
     dev: false
     engines:
@@ -146,6 +214,12 @@ packages:
       node: '>=4.0.0'
     resolution:
       integrity: sha1-qJ+7Ig9c4l7FboxKqKT9e1sNKf4=
+  /csv-stringify/1.0.4:
+    dependencies:
+      lodash.get: 4.4.2
+    dev: false
+    resolution:
+      integrity: sha1-vBi6ua1M7zGV/SV5gLWLR5xC0+U=
   /dashdash/1.14.1:
     dependencies:
       assert-plus: 1.0.0
@@ -270,6 +344,12 @@ packages:
     dev: false
     resolution:
       integrity: sha1-1RQsDK7msRifh9OnYREGT4bIu/I=
+  /file-type/7.7.1:
+    dev: false
+    engines:
+      node: '>=4'
+    resolution:
+      integrity: sha512-bTrKkzzZI6wH+NXhyD3SOXtb2zXTw2SbwI2RxUlRcXVsnN7jNL5hJzVQLYv7FOQhxFkK4XWdAflEaWFpaLLWpQ==
   /finalhandler/1.1.1:
     dependencies:
       debug: 2.6.9
@@ -386,10 +466,32 @@ packages:
       node: '>= 0.10'
     resolution:
       integrity: sha1-4/o1e3c9phnybpXwSdBVxyeW+Gs=
+  /is-extendable/1.0.1:
+    dependencies:
+      is-plain-object: 2.0.4
+    dev: false
+    engines:
+      node: '>=0.10.0'
+    resolution:
+      integrity: sha512-arnXMxT1hhoKo9k1LZdmlNyJdDDfy2v0fXjFlmok4+i8ul/6WlbVge9bhM74OpNPQPMGUToDtz+KXa1PneJxOA==
+  /is-plain-object/2.0.4:
+    dependencies:
+      isobject: 3.0.1
+    dev: false
+    engines:
+      node: '>=0.10.0'
+    resolution:
+      integrity: sha512-h5PpgXkWitc38BBMYawTYMWJHFZJVnBquFE57xFpjB8pJFiF6gZ+bU+WyI/yqXiFR5mdLsgYNaPe8uao6Uv9Og==
   /is-typedarray/1.0.0:
     dev: false
     resolution:
       integrity: sha1-5HnICFjfDBsR3dppQPlgEfzaSpo=
+  /isobject/3.0.1:
+    dev: false
+    engines:
+      node: '>=0.10.0'
+    resolution:
+      integrity: sha1-TkMekrEalzFjaqH5yNHMvP2reN8=
   /isstream/0.1.2:
     dev: false
     resolution:
@@ -422,6 +524,14 @@ packages:
       '0': node >=0.6.0
     resolution:
       integrity: sha1-MT5mvB5cwG5Di8G3SZwuXFastqI=
+  /lodash.get/4.4.2:
+    dev: false
+    resolution:
+      integrity: sha1-LRd/ZS+jHpObRDjVNBSZ36OCXpk=
+  /lodash/4.17.10:
+    dev: false
+    resolution:
+      integrity: sha512-UejweD1pDoXu+AD825lWwp4ZGtSwgnpZxb3JDViD7StjQz+Nb/6l093lx4OQ0foGWNRoc19mWy7BzL+UAK2iVg==
   /media-typer/0.3.0:
     dev: false
     engines:
@@ -461,6 +571,10 @@ packages:
     dev: false
     resolution:
       integrity: sha1-VgiurfwAvmwpAd9fmGF4jeDVl8g=
+  /nan/2.10.0:
+    dev: false
+    resolution:
+      integrity: sha512-bAdJv7fBLhWC+/Bls0Oza+mvTaNQtP+1RyhhhvD95pgUJz6XM5IzgmxOkItJ9tkoCiplvAnXI1tNmmUD/eScyA==
   /negotiator/0.6.1:
     dev: false
     engines:
@@ -471,6 +585,22 @@ packages:
     dev: false
     resolution:
       integrity: sha1-Rqarfwrq2N6unsBWV4C31O/rnUM=
+  /object.omit/3.0.0:
+    dependencies:
+      is-extendable: 1.0.1
+    dev: false
+    engines:
+      node: '>=0.10.0'
+    resolution:
+      integrity: sha512-EO+BCv6LJfu+gBIF3ggLicFebFLN5zqzz/WWJlMFfkMyGth+oBkhxzDl0wx2W4GkLzuQs/FsSkXZb2IMWQqmBQ==
+  /object.pick/1.3.0:
+    dependencies:
+      isobject: 3.0.1
+    dev: false
+    engines:
+      node: '>=0.10.0'
+    resolution:
+      integrity: sha1-h6EKxMFpS9Lhy/U1kaZhQftd10c=
   /on-finished/2.3.0:
     dependencies:
       ee-first: 1.1.1
@@ -512,6 +642,12 @@ packages:
       node: '>=0.6'
     resolution:
       integrity: sha512-eRzhrN1WSINYCDCbrz796z37LOe3m5tmW7RQf6oBntukAG1nmovJvhnwHHRMAfeoItc1m2Hk02WER2aQ/iqs+A==
+  /qs/6.5.2:
+    dev: false
+    engines:
+      node: '>=0.6'
+    resolution:
+      integrity: sha512-N5ZAX4/LxJmF+7wN74pUD6qAh9/wnvdQcjq9TZjevvXzSUo7bfmw91saqMjzGS2xq91/odN2dW/WOl7qQHNDGA==
   /range-parser/1.2.0:
     dev: false
     engines:
@@ -558,10 +694,41 @@ packages:
       node: '>= 4'
     resolution:
       integrity: sha512-8H7Ehijd4js+s6wuVPLjwORxD4zeuyjYugprdOXlPSqaApmL/QOy+EB/beICHVCHkGMKNh5rvihb5ov+IDw4mg==
+  /request/2.87.0:
+    dependencies:
+      aws-sign2: 0.7.0
+      aws4: 1.7.0
+      caseless: 0.12.0
+      combined-stream: 1.0.6
+      extend: 3.0.1
+      forever-agent: 0.6.1
+      form-data: 2.3.2
+      har-validator: 5.0.3
+      http-signature: 1.2.0
+      is-typedarray: 1.0.0
+      isstream: 0.1.2
+      json-stringify-safe: 5.0.1
+      mime-types: 2.1.18
+      oauth-sign: 0.8.2
+      performance-now: 2.1.0
+      qs: 6.5.2
+      safe-buffer: 5.1.2
+      tough-cookie: 2.3.4
+      tunnel-agent: 0.6.0
+      uuid: 3.3.2
+    dev: false
+    engines:
+      node: '>= 4'
+    resolution:
+      integrity: sha512-fcogkm7Az5bsS6Sl0sibkbhcKsnyon/jV1kF3ajGmF0c8HrttdKTPRT9hieOaQHA5HEq6r8OyWOo/o781C1tNw==
   /safe-buffer/5.1.1:
     dev: false
     resolution:
       integrity: sha512-kKvNJn6Mm93gAczWVJg7wH+wGYWNrDHdWvpUmHyEsgCtIwwo3bqPtV4tR5tuPaUhTOo/kvhVwd8XwwOllGYkbg==
+  /safe-buffer/5.1.2:
+    dev: false
+    resolution:
+      integrity: sha512-Gd2UZBJDkXlY7GbJxfsE8/nvKkUEU1G38c1siN6QP6a9PT9MmHB8GnpscSmMJSoF8LOIrt8ud/wPtojys4G6+g==
   /send/0.16.2:
     dependencies:
       debug: 2.6.9
@@ -670,6 +837,12 @@ packages:
       node: '>= 0.6'
     resolution:
       integrity: sha512-HRkVv/5qY2G6I8iab9cI7v1bOIdhm94dVjQCPFElW9W+3GeDOSHmy2EBYe4VTApuzolPcmgFTN3ftVJRKR2J9Q==
+  /typedarray-to-buffer/3.1.5:
+    dependencies:
+      is-typedarray: 1.0.0
+    dev: false
+    resolution:
+      integrity: sha512-zdu8XMNEDepKKR+XYOXAVPtWui0ly0NtohUscw+UmaHiAWT8hrV1rr//H6V+0DvJ3OQ19S979M0laLfX8rm82Q==
   /unpipe/1.0.0:
     dev: false
     engines:
@@ -687,12 +860,21 @@ packages:
     hasBin: true
     resolution:
       integrity: sha512-jZnMwlb9Iku/O3smGWvZhauCf6cvvpKi4BKRiliS3cxnI+Gz9j5MEpTz2UFuXiKPJocb7gnsLHwiS05ige5BEA==
+  /uuid/3.3.2:
+    dev: false
+    hasBin: true
+    resolution:
+      integrity: sha512-yXJmeNaw3DnnKAOKJE51sL/ZaYfWJRl1pK9dr19YFCu0ObS231AB1/LbqTKRAQ5kw8A90rA6fr4riOUpTZvQZA==
   /vary/1.1.2:
     dev: false
     engines:
       node: '>= 0.8'
     resolution:
       integrity: sha1-IpnwLG3tMNSllhsLn3RSShj2NPw=
+  /vcap_services/0.3.4:
+    dev: false
+    resolution:
+      integrity: sha1-FUv5QEAlEqzKI98iY/xg72aEWto=
   /verror/1.10.0:
     dependencies:
       assert-plus: 1.0.0
@@ -703,6 +885,49 @@ packages:
       '0': node >=0.6.0
     resolution:
       integrity: sha1-OhBcoXBTr1XW4nDB+CiGguGNpAA=
+  /watson-developer-cloud/3.5.3:
+    dependencies:
+      '@types/csv-stringify': 1.4.2
+      '@types/extend': 3.0.0
+      '@types/file-type': 5.2.1
+      '@types/is-stream': 1.1.0
+      '@types/node': 10.3.6
+      '@types/request': 2.47.1
+      async: 2.6.1
+      buffer-from: 1.1.0
+      csv-stringify: 1.0.4
+      extend: 3.0.1
+      file-type: 7.7.1
+      isstream: 0.1.2
+      mime-types: 2.1.18
+      object.omit: 3.0.0
+      object.pick: 1.3.0
+      request: 2.87.0
+      vcap_services: 0.3.4
+      websocket: 1.0.26
+    dev: false
+    engines:
+      node: '>=4'
+    resolution:
+      integrity: sha512-TY7BfKgC75j+FpJJJawk4vC5VEDgiY3GUHyyPQqNaltENTiSsEqi7BIVV/vxqecuu5deiSRf7nCOft6vvleebQ==
+  /websocket/1.0.26:
+    dependencies:
+      debug: 2.6.9
+      nan: 2.10.0
+      typedarray-to-buffer: 3.1.5
+      yaeti: 0.0.6
+    dev: false
+    engines:
+      node: '>=0.10.0'
+    requiresBuild: true
+    resolution:
+      integrity: sha512-fjcrYDPIQxpTnqFQ9JjxUQcdvR89MFAOjPBlF+vjOt49w/XW4fJknUoMz/mDIn2eK1AdslVojcaOxOqyZZV8rw==
+  /yaeti/0.0.6:
+    dev: false
+    engines:
+      node: '>=0.10.32'
+    resolution:
+      integrity: sha1-8m9ITXJoTPQr7ft2lwqhYI+/lXc=
 registry: 'https://registry.npmjs.org/'
 shrinkwrapMinorVersion: 8
 shrinkwrapVersion: 3
@@ -710,3 +935,4 @@ specifiers:
   body-parser: '*'
   express: '*'
   request: ^2.72.0
+  watson-developer-cloud: ^3.5.2
