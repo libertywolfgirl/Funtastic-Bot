@@ -233,13 +233,16 @@ function updateMessage(input, response) {
   console.log(response);
   console.log("yes" + !response.output);
   var responseText = null;
-  if (!response.output) {
-    console.log("output isn't null");
-    response.output = {};
-  } else {
-    console.log("output is null");
-    return response;
-  }
+  //if (!response.output) {
+  //  console.log("output isn't null");
+  //  response.output = {};
+  // } else {
+  //  console.log("output is null");
+  //  return response;
+  // }
+  
+  response.output.text = responseText;
+  
   if (response.intents && response.intents[0]) {
     console.log("intent detected");
     var intent = response.intents[0];
