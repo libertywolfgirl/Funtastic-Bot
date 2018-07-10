@@ -74,7 +74,8 @@ app.post('/webhook', function (req, res) {
                     console.log(err);
                     return res.status(err.code || 500).json(err);
                   }
-                  return res.json(updateMessage(payload, data));
+                  receivedMessage(event, updateMessage(payload, data));
+                  //return res.json(u);
               });
         } else if (event.postback) {
           console.log("Received postback");
@@ -90,12 +91,12 @@ app.post('/webhook', function (req, res) {
     // You must send back a 200, within 20 seconds, to let us know
     // you've successfully received the callback. Otherwise, the request
     // will time out and we will keep trying to resend.
-    //res.sendStatus(200);
+    res.sendStatus(200);
   }
 });
 
 // Incoming events handling
-function receivedMessage(event) {
+function receivedMessage(event, Wat) {
   var senderID = event.sender.id;
   var recipientID = event.recipient.id;
   var timeOfMessage = event.timestamp;
@@ -119,7 +120,7 @@ function receivedMessage(event) {
         break;
 
       default:
-        sendTextMessage(senderID, messageText);
+        sendTextMessage(senderID, response);
     }
   } else if (messageAttachments) {
     sendTextMessage(senderID, "Message with attachment received");
@@ -241,7 +242,7 @@ function updateMessage(input, response) {
   //  return response;
   // }
   
-  response.output.text = responseText;
+  
   
   if (response.intents && response.intents[0]) {
     console.log("intent detected");
@@ -259,8 +260,8 @@ function updateMessage(input, response) {
       responseText = 'I did not understand your intent';
     }
   }
-  console.log("Result " + responseText);
-  response.output.text = responseText;
+  //console.log("Result " + responseText);
+  //response.output.text = responseText;
   return response;
 }
 
