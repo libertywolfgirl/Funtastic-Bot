@@ -6,7 +6,15 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const request = require('request');
 const path = require('path');
-const assistant = require('./assistant.js');
+const AssistantV1 = require('watson-developer-cloud/assistant/v1'); // watson sdk
+
+const assistant = new AssistantV1({
+            username: process.env.ASSISTANT_USERNAME,
+            password: process.env.ASSISTANT_PASSWORD,
+            url: process.env.ASSISTANT_URL,
+            version: 'v1',
+            version_date: '2017-05-26'
+        });
 var messengerButton = "<html><head><title>Facebook Messenger Bot</title></head><body><h1>Facebook Messenger Bot</h1>This is a bot based on Messenger Platform QuickStart. For more details, see their <a href=\"https://developers.facebook.com/docs/messenger-platform/guides/quick-start\">docs</a>.<script src=\"https://button.glitch.me/button.js\" data-style=\"glitch\"></script><div class=\"glitchButton\" style=\"position:fixed;top:20px;right:20px;\"></div></body></html>";
 
 // The rest of the code implements the routes for our Express server.
@@ -62,8 +70,11 @@ app.post('/webhook', function (req, res) {
                 };
                 assistant.message(payload, function (err, data) {
                   if (err) {
+                    console.log("error");
+                    console.log(err);
                     return res.status(err.code || 500).json(err);
                   }
+                  console.log("Here");
                   return res.json(updateMessage(payload, data));
               });
         } else if (event.postback) {
@@ -80,7 +91,7 @@ app.post('/webhook', function (req, res) {
     // You must send back a 200, within 20 seconds, to let us know
     // you've successfully received the callback. Otherwise, the request
     // will time out and we will keep trying to resend.
-    res.sendStatus(200);
+    //res.sendStatus(200);
   }
 });
 
@@ -240,6 +251,7 @@ function updateMessage(input, response) {
       responseText = 'I did not understand your intent';
     }
   }
+  console.log("Result " + responseText);
   response.output.text = responseText;
   return response;
 }
