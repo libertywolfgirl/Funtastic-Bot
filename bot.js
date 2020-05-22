@@ -9,8 +9,7 @@ const path = require('path');
 const Watson = require('watson-developer-cloud'); // watson sdk
 
 const assistant = new Watson.ConversationV1({
-            username: process.env.ASSISTANT_USERNAME,
-            password: process.env.ASSISTANT_PASSWORD,
+            apiKey: process.env.ASSISTANT_APIKEY,
             url: process.env.ASSISTANT_URL,
             version: 'v1',
             version_date: '2017-05-26'
