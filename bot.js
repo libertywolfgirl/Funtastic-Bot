@@ -6,14 +6,25 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const request = require('request');
 const path = require('path');
-const Watson = require('watson-developer-cloud'); // watson sdk
+//const Watson = require('watson-developer-cloud'); // watson sdk
+const AssistantV2 = require('ibm-watson/assistant/v2');
+const { IamAuthenticator } = require('ibm-watson/auth');
 
-const assistant = new Watson.ConversationV1({
+/*const assistant = new Watson.ConversationV2({
             apiKey: process.env.ASSISTANT_APIKEY,
             url: process.env.ASSISTANT_URL,
-            version: 'v1',
+            version: 'v2',
             version_date: '2017-05-26'
-        });
+        });*/
+
+const assistant = new AssistantV2({
+  version: 'V2',
+  authenticator: new IamAuthenticator({
+    apikey: process.env.ASSISTANT_APIKEY,
+  }),
+  url: process.env.ASSISTANT_URL,
+});
+
 var messengerButton = "<html><head><title>Facebook Messenger Bot</title></head><body><h1>Facebook Messenger Bot</h1>This is a bot based on Messenger Platform QuickStart. For more details, see their <a href=\"https://developers.facebook.com/docs/messenger-platform/guides/quick-start\">docs</a>.<script src=\"https://button.glitch.me/button.js\" data-style=\"glitch\"></script><div class=\"glitchButton\" style=\"position:fixed;top:20px;right:20px;\"></div></body></html>";
 
 // The rest of the code implements the routes for our Express server.
