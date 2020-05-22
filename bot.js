@@ -8,6 +8,18 @@ const request = require('request');
 const path = require('path');
 const Watson = require('watson-developer-cloud'); // watson sdk
 
+var Bot = require('messenger-bot')
+var http = require('http')
+const bot = new Bot({
+  token: process.env.PAGE_TOKEN,
+  verify: process.env.VERIFY_TOKEN,
+  app_secret: process.env.APP_SECRET
+})
+
+bot.on('error', (error) => {
+  console.log(error.message)
+})
+
 const assistant = new Watson.ConversationV1({
             username: process.env.ASSISTANT_USERNAME,
             password: process.env.ASSISTANT_PASSWORD,
