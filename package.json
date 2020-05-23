@@ -19,9 +19,10 @@
   "license": "MIT",
   "homepage": "https://developers.facebook.com/docs/messenger-platform/guides/quick-start",
   "dependencies": {
-    "request": "^2.88.2",
-    "express": "*",
     "body-parser": "*",
+    "express": "*",
+    "ibm-watson": "^5.5.0",
+    "request": "^2.88.2",
     "watson-developer-cloud": "^4.0.1"
   }
 }
