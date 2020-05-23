@@ -75,9 +75,9 @@ app.post("/webhook", function(req, res) {
       entry.messaging.forEach(function(event) {
         if (event.message) {
           console.log("Received message");
-          const workspaceID = process.env.ASSISTANT_WORKSPACEID;
+          const assistantID = process.env.ASSISTANT_ID;
           var payload = {
-            workspace_id: workspaceID,
+            assistant_id: assistantID,
             input: event.message
           };
           assistant.message(payload, function(err, data) {
