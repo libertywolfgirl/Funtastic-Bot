@@ -59,6 +59,7 @@ app.get("/", function(req, res) {
   res.end();
 });
 
+// is this right?
 app.get('/api/session', function (req, res) {
   assistant.createSession({
     assistant_id: process.env.ASSISTANT_ID || '{assistant_id}',
@@ -68,7 +69,7 @@ app.get('/api/session', function (req, res) {
     } else {
       return res.send(response);
     }
-    });
+  });
 });
 
 // Message processing
