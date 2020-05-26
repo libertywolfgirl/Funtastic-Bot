@@ -59,6 +59,18 @@ app.get("/", function(req, res) {
   res.end();
 });
 
+app.get('/api/session', function (req, res) {
+  assistant.createSession({
+    assistant_id: process.env.ASSISTANT_ID || '{assistant_id}',
+  }, function (error, response) {
+    if (error) {
+      return res.send(error);
+    } else {
+      return res.send(response);
+    }
+    });
+});
+
 // Message processing
 app.post("/webhook", function(req, res) {
   console.log(req.body);
@@ -78,7 +90,13 @@ app.post("/webhook", function(req, res) {
           const assistantID = process.env.ASSISTANT_ID;
           var payload = {
             assistant_id: assistantID,
-            input: event.message
+            session_id: req.body.session_id,
+            input: {
+              message_type : 'text',
+              options : {
+                return_context : true
+                }
+            }
           };
           assistant.message(payload, function(err, data) {
             if (err) {
