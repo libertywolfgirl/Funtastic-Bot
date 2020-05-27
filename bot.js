@@ -60,32 +60,45 @@ app.get("/", function(req, res) {
 });
 
 // is this right?
-app.get('/api/session', function (req, res) {
-  assistant.createSession({
-    assistant_id: process.env.ASSISTANT_ID || '{assistant_id}',
-  }, function (error, response) {
-    if (error) {
-      return res.send(error);
-    } else {
-      return res.send(response);
+app.get("/api/session", function(req, res) {
+  assistant.createSession(
+    {
+      assistant_id: process.env.ASSISTANT_ID || "{assistant_id}"
+    },
+    function(error, response) {
+      if (error) {
+        return res.send(error);
+      } else {
+        return res.send(response);
+      }
     }
-  });
+  );
 });
 
-// Handles messages events
-function handleMessage(sender_psid, received_message) {
+app.post("/webhook", (req, res) => {
+  // Parse the request body from the POST
+  let body = req.body;
 
-}
+  // Check the webhook event is from a Page subscription
+  if (body.object === "page") {
+    // Iterate over each entry - there may be multiple if batched
+    body.entry.forEach(function(entry) {
+      // Gets the body of the webhook event
+      let webhook_event = entry.messaging[0];
+      console.log(webhook_event);
 
-// Handles messaging_postbacks events
-function handlePostback(sender_psid, received_postback) {
+      // Get the sender PSID
+      let sender_psid = webhook_event.sender.id;
+      console.log("Sender PSID: " + sender_psid);
+    });
 
-}
-
-// Sends response messages via the Send API
-function callSendAPI(sender_psid, response) {
-  
-}
+    // Return a '200 OK' response to all events
+    res.status(200).send("EVENT_RECEIVED");
+  } else {
+    // Return a '404 Not Found' if event is not from a page subscription
+    res.sendStatus(404);
+  }
+});
 
 // Message processing
 /*app.post("/webhook", function(req, res) {
