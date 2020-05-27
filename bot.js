@@ -72,8 +72,23 @@ app.get('/api/session', function (req, res) {
   });
 });
 
+// Handles messages events
+function handleMessage(sender_psid, received_message) {
+
+}
+
+// Handles messaging_postbacks events
+function handlePostback(sender_psid, received_postback) {
+
+}
+
+// Sends response messages via the Send API
+function callSendAPI(sender_psid, response) {
+  
+}
+
 // Message processing
-app.post("/webhook", function(req, res) {
+/*app.post("/webhook", function(req, res) {
   console.log(req.body);
   var data = req.body;
 
@@ -83,6 +98,14 @@ app.post("/webhook", function(req, res) {
     data.entry.forEach(function(entry) {
       var pageID = entry.id;
       var timeOfEvent = entry.time;
+      
+      // Gets the body of the webhook event
+      let webhook_event = entry.messaging[0];
+      console.log(webhook_event);
+
+      // Get the sender PSID
+      let sender_psid = webhook_event.sender.id;
+      console.log('Sender PSID: ' + sender_psid);
 
       // Iterate over each messaging event
       entry.messaging.forEach(function(event) {
@@ -120,7 +143,7 @@ app.post("/webhook", function(req, res) {
     // will time out and we will keep trying to resend.
     //res.sendStatus(200);
   }
-});
+});*/
 
 // Incoming events handling
 function receivedMessage(event, watsonResponse) {
