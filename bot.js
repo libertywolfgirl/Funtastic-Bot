@@ -80,13 +80,17 @@ let sessionID;
 
 // Create session.
 assistant.createSession({
-  assistantId: '{assistant_id}'
+  assistantId: assistantID
 })
   .then(res => {
-    console.log(JSON.stringify(res.result, null, 2));
+    sessionID = res.result.session_id;
+    /*sendMessage({
+      messageType: 'text',
+      text: '', // start conversation with empty message
+    });*/
   })
   .catch(err => {
-    console.log(err);
+    console.log(err); // something went wrong
   });
 
 app.post("/webhook", (req, res) => {
@@ -110,8 +114,8 @@ app.post("/webhook", (req, res) => {
         if (event.message) {
           console.log("Received message");
           var payload = {
-            assistant_id: assistantID,
-            session_id: sessionID,
+            assistantId: assistantID,
+            sessionId: sessionID,
             input: event.message
           };
           assistant.message(payload, function(err, data) {
