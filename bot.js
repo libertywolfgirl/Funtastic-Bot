@@ -79,11 +79,15 @@ const assistantID = process.env.ASSISTANT_ID;
 let sessionID;
 
 // Create session.
-assistant.createSession({assistantID,}).then(res => {
+assistant
+  .createSession({
+    assistantID
+})
+  .then(res => {
     sessionID = res.result.session_id;
-    callSendAPI({
-      messageType: 'text',
-      text: '', // start conversation with empty message
+    receivedMessage({
+      messageType: "text",
+      text: "" // start conversation with empty message
     });
   })
   .catch(err => {
@@ -105,7 +109,7 @@ app.post("/webhook", (req, res) => {
       // Get the sender PSID
       let sender_psid = webhook_event.sender.id;
       console.log("Sender PSID: " + sender_psid);
-      
+
       // Iterate over each messaging event
       entry.messaging.forEach(function(event) {
         if (event.message) {
@@ -113,12 +117,7 @@ app.post("/webhook", (req, res) => {
           var payload = {
             assistant_id: assistantID,
             session_id: sessionID,
-            input: {
-              message_type : 'text',
-              options : {
-                return_context : true
-                }
-            }
+            input: event.message
           };
           assistant.message(payload, function(err, data) {
             if (err) {
@@ -209,9 +208,9 @@ function callSendAPI(messageData) {
   );
 }
 
-      // Check if the event is a message or postback and
-      // pass the event to the appropriate handler function
-      /*if (webhook_event.message) {
+// Check if the event is a message or postback and
+// pass the event to the appropriate handler function
+/*if (webhook_event.message) {
         handleMessage(sender_psid, webhook_event.message);
       } else if (webhook_event.postback) {
         handlePostback(sender_psid, webhook_event.postback);
