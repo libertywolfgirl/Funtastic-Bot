@@ -137,7 +137,6 @@ app.post("/webhook", (req, res) => {
             .catch(err => {
               console.log(err);
             });
-
     // Assume all went well.
     //
     // You must send back a 200, within 20 seconds, to let us know
