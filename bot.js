@@ -79,15 +79,14 @@ const assistantID = process.env.ASSISTANT_ID;
 let sessionID;
 
 // Create session.
-assistant
-  .createSession({
-    assistantID,
-  })
+assistant.createSession({
+  assistantId: '{assistant_id}'
+})
   .then(res => {
-    sessionID = res.result.session_id;
+    console.log(JSON.stringify(res.result, null, 2));
   })
   .catch(err => {
-    console.log(err); // something went wrong
+    console.log(err);
   });
 
 app.post("/webhook", (req, res) => {
