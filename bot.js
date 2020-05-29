@@ -79,9 +79,10 @@ const assistantID = process.env.ASSISTANT_ID;
 let sessionID;
 
 // Create session.
-assistant.createSession({
-  assistantId: assistantID
-})
+assistant
+  .createSession({
+    assistantId: assistantID
+  })
   .then(res => {
     sessionID = res.result.session_id;
     /*sendMessage({
@@ -113,7 +114,7 @@ app.post("/webhook", (req, res) => {
       entry.messaging.forEach(function(event) {
         if (event.message) {
           console.log("Received message");
-          /*var payload = {
+          var payload = {
             assistantId: assistantID,
             sessionId: sessionID,
             input: event.message
@@ -125,27 +126,31 @@ app.post("/webhook", (req, res) => {
               return res.status(err.code || 500).json(err);
             }
             receivedMessage(event, data);
-          });*/
-          assistant.message({
-            assistantId: assistantID,
-            sessionId: assistantID,
-            input: event.message
+          });
+          /*assistant
+            .message({
+              assistantId: assistantID,
+              sessionId: sessionID,
+              input: event.message
             })
             .then(res => {
               console.log(res.status(err.code || 500).json(err));
             })
             .catch(err => {
               console.log(err);
-            });
+            });*/
+        } else {
+          console.log("Webhook received unknown event: ", event);
+        }
+      });
+    });
+
     // Assume all went well.
     //
     // You must send back a 200, within 20 seconds, to let us know
     // you've successfully received the callback. Otherwise, the request
     // will time out and we will keep trying to resend.
     //res.sendStatus(200);
-        }
-      }
-    });
   }
 });
 
