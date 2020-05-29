@@ -143,9 +143,11 @@ app.post("/webhook", (req, res) => {
     // you've successfully received the callback. Otherwise, the request
     // will time out and we will keep trying to resend.
     //res.sendStatus(200);
-    }
-  })
-)}
+        }
+      }
+    });
+  }
+});
 
 // Incoming events handling
 function receivedMessage(event, watsonResponse) {
