@@ -60,7 +60,7 @@ app.get("/", function(req, res) {
 });
 
 // is this right?
-app.get("/api/session", function(req, res) {
+/*app.get("/api/session", function(req, res) {
   assistant.createSession(
     {
       assistant_id: process.env.ASSISTANT_ID || "{assistant_id}"
@@ -73,7 +73,7 @@ app.get("/api/session", function(req, res) {
       }
     }
   );
-});
+});*/
 
 app.post("/webhook", (req, res) => {
   // Parse the request body from the POST
@@ -90,10 +90,114 @@ app.post("/webhook", (req, res) => {
       // Get the sender PSID
       let sender_psid = webhook_event.sender.id;
       console.log("Sender PSID: " + sender_psid);
+      
+      // Iterate over each messaging event
+      entry.messaging.forEach(function(event) {
+        if (event.message) {
+          console.log("Received message");
+          const assistantID = process.env.ASSISTANT_ID;
+          var payload = {
+            assistant_id: assistantID,
+            session_id: req.body.session_id,
+            input: {
+              message_type : 'text',
+              options : {
+                return_context : true
+                }
+            }
+          };
+          assistant.message(payload, function(err, data) {
+            if (err) {
+              console.log("error");
+              console.log(err);
+              return res.status(err.code || 500).json(err);
+            }
+            receivedMessage(event, data);
+          });
+        } else {
+          console.log("Webhook received unknown event: ", event);
+        }
+      });
+    });
+
+    // Assume all went well.
+    //
+    // You must send back a 200, within 20 seconds, to let us know
+    // you've successfully received the callback. Otherwise, the request
+    // will time out and we will keep trying to resend.
+    //res.sendStatus(200);
+  }
+});
+
+// Incoming events handling
+function receivedMessage(event, watsonResponse) {
+  var senderID = event.sender.id;
+  var recipientID = event.recipient.id;
+  var timeOfMessage = event.timestamp;
+  var message = event.message;
+
+  console.log(
+    "Received message for user %d and page %d at %d with message:",
+    senderID,
+    recipientID,
+    timeOfMessage
+  );
+  console.log(JSON.stringify(message));
+
+  var messageId = message.mid;
+  var messageText = message.text;
+
+  if (messageText) {
+    sendTextMessage(senderID, watsonResponse.output.text[0]);
+  }
+}
+
+//////////////////////////
+// Sending helpers
+//////////////////////////
+function sendTextMessage(recipientId, messageText) {
+  var messageData = {
+    recipient: {
+      id: recipientId
+    },
+    message: {
+      text: messageText
+    }
+  };
+
+  callSendAPI(messageData);
+}
+
+function callSendAPI(messageData) {
+  request(
+    {
+      uri: "https://graph.facebook.com/v2.6/me/messages",
+      qs: { access_token: process.env.PAGE_ACCESS_TOKEN },
+      method: "POST",
+      json: messageData
+    },
+    function(error, response, body) {
+      if (!error && response.statusCode == 200) {
+        var recipientId = body.recipient_id;
+        var messageId = body.message_id;
+
+        console.log(
+          "Successfully sent generic message with id %s to recipient %s",
+          messageId,
+          recipientId
+        );
+      } else {
+        console.error("Unable to send message.");
+        console.error(response);
+        console.error(error);
+      }
+    }
+  );
+}
 
       // Check if the event is a message or postback and
       // pass the event to the appropriate handler function
-      if (webhook_event.message) {
+      /*if (webhook_event.message) {
         handleMessage(sender_psid, webhook_event.message);
       } else if (webhook_event.postback) {
         handlePostback(sender_psid, webhook_event.postback);
@@ -106,7 +210,7 @@ app.post("/webhook", (req, res) => {
     // Return a '404 Not Found' if event is not from a page subscription
     res.sendStatus(404);
   }
-});
+});*/
 
 function handleMessage(sender_psid, received_message) {
   let response;
@@ -170,7 +274,7 @@ function handlePostback(sender_psid, received_postback) {
   callSendAPI(sender_psid, response);
 }
 
-function callSendAPI(sender_psid, response) {
+/*function callSendAPI(sender_psid, response) {
   // Construct the message body
   let request_body = {
     recipient: {
@@ -195,7 +299,7 @@ function callSendAPI(sender_psid, response) {
       }
     }
   );
-}
+}*/
 
 // Message processing
 /*app.post("/webhook", function(req, res) {
