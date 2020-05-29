@@ -81,14 +81,10 @@ let sessionID;
 // Create session.
 assistant
   .createSession({
-    assistantID
-})
+    assistantID,
+  })
   .then(res => {
     sessionID = res.result.session_id;
-    receivedMessage({
-      messageType: "text",
-      text: "" // start conversation with empty message
-    });
   })
   .catch(err => {
     console.log(err); // something went wrong
