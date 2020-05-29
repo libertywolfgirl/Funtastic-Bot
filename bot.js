@@ -113,7 +113,7 @@ app.post("/webhook", (req, res) => {
       entry.messaging.forEach(function(event) {
         if (event.message) {
           console.log("Received message");
-          var payload = {
+          /*var payload = {
             assistantId: assistantID,
             sessionId: sessionID,
             input: event.message
@@ -125,12 +125,18 @@ app.post("/webhook", (req, res) => {
               return res.status(err.code || 500).json(err);
             }
             receivedMessage(event, data);
-          });
-        } else {
-          console.log("Webhook received unknown event: ", event);
-        }
-      });
-    });
+          });*/
+          assistant.message({
+            assistantId: assistantID,
+            sessionId: assistantID,
+            input: event.message
+            })
+            .then(res => {
+              console.log(res.status(err.code || 500).json(err));
+            })
+            .catch(err => {
+              console.log(err);
+            });
 
     // Assume all went well.
     //
