@@ -75,6 +75,21 @@ app.get("/", function(req, res) {
   );
 });*/
 
+const assistantID = process.env.ASSISTANT_ID;
+let sessionID;
+
+// Create session.
+assistant.createSession({assistantID,}).then(res => {
+    sessionID = res.result.session_id;
+    callSendAPI({
+      messageType: 'text',
+      text: '', // start conversation with empty message
+    });
+  })
+  .catch(err => {
+    console.log(err); // something went wrong
+  });
+
 app.post("/webhook", (req, res) => {
   // Parse the request body from the POST
   let body = req.body;
@@ -95,10 +110,9 @@ app.post("/webhook", (req, res) => {
       entry.messaging.forEach(function(event) {
         if (event.message) {
           console.log("Received message");
-          const assistantID = process.env.ASSISTANT_ID;
           var payload = {
             assistant_id: assistantID,
-            session_id: req.body.session_id,
+            session_id: sessionID,
             input: {
               message_type : 'text',
               options : {
