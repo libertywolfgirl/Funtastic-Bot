@@ -126,7 +126,7 @@ app.post("/webhook", (req, res) => {
               console.log(err);
               //return res.status(err.code || 500).json(err);
             }
-            receivedMessage(webhook_event, data);
+            hndleMessage(webhook_event, data);
           });
           /*assistant
             .message({
@@ -156,7 +156,7 @@ app.post("/webhook", (req, res) => {
 });
 
 // Incoming events handling
-function receivedMessage(webhook_event, watsonResponse) {
+/*function receivedMessage(webhook_event, watsonResponse) {
   var senderID = webhook_event.sender.id;
   var recipientID = webhook_event.recipient.id;
   var timeOfMessage = webhook_event.timestamp;
@@ -176,7 +176,7 @@ function receivedMessage(webhook_event, watsonResponse) {
   if (messageText) {
     sendTextMessage(senderID, watsonResponse.output.text[0]);
   }
-}
+}*/
 
 //////////////////////////
 // Sending helpers
