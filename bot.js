@@ -111,21 +111,22 @@ app.post("/webhook", (req, res) => {
       console.log("Sender PSID: " + sender_psid);
 
       // Iterate over each messaging event
-      entry.messaging.forEach((assistantID, sessionID, event) => {
-        if (event.message) {
+      entry.messaging.forEach((assistantID, sessionID, webhook_event) => {
+        if (webhook_event.message) {
           console.log("Received message");
+          handleMessage(sender_psid, webhook_event.message);
           var payload = {
             assistantId: assistantID,
             sessionId: sessionID,
-            input: event.message
+            input: webhook_event.message
           };
           assistant.message(payload, function(err, data) {
             if (err) {
               console.log("error");
               console.log(err);
-              return res.status(err.code || 500).json(err);
+              //return res.status(err.code || 500).json(err);
             }
-            receivedMessage(event, data);
+            receivedMessage(webhook_event, data);
           });
           /*assistant
             .message({
@@ -140,7 +141,7 @@ app.post("/webhook", (req, res) => {
               console.log(err);
             });*/
         } else {
-          console.log("Webhook received unknown event: ", event);
+          console.log("Webhook received unknown event: ", webhook_event);
         }
       });
     });
@@ -155,11 +156,11 @@ app.post("/webhook", (req, res) => {
 });
 
 // Incoming events handling
-function receivedMessage(event, watsonResponse) {
-  var senderID = event.sender.id;
-  var recipientID = event.recipient.id;
-  var timeOfMessage = event.timestamp;
-  var message = event.message;
+function receivedMessage(webhook_event, watsonResponse) {
+  var senderID = webhook_event.sender.id;
+  var recipientID = webhook_event.recipient.id;
+  var timeOfMessage = webhook_event.timestamp;
+  var message = webhook_event.message;
 
   console.log(
     "Received message for user %d and page %d at %d with message:",
