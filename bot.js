@@ -120,25 +120,28 @@ app.post("/webhook", (req, res) => {
             sessionId: sessionID,
             input: webhook_event.message
           };
-          assistant.message(payload, function(err, data) {
+          /*assistant.message(payload, function(err, result) {
             if (err) {
               console.log("error");
               console.log(err);
               //return res.status(err.code || 500).json(err);
             }
-          });
-          /*assistant
+          });*/
+          assistant
             .message({
               assistantId: assistantID,
               sessionId: sessionID,
-              input: event.message
+              input: {
+                'message_type': 'text',
+                'text': 'Hello'
+              }
             })
             .then(res => {
-              console.log(res.status(err.code || 500).json(err));
+              console.log(JSON.stringify(res.result, null, 2));
             })
             .catch(err => {
               console.log(err);
-            });*/
+            });
         } else if (webhook_event.postback) {
           handlePostback(sender_psid, webhook_event.postback);
         } else {
