@@ -102,6 +102,9 @@ app.post("/webhook", (req, res) => {
   if (body.object === "page") {
     // Iterate over each entry - there may be multiple if batched
     body.entry.forEach(function(entry) {
+      var pageID = entry.id;
+      var timeOfEvent = entry.time;
+
       // Gets the body of the webhook event
       let webhook_event = entry.messaging[0];
       console.log(webhook_event);
@@ -112,7 +115,9 @@ app.post("/webhook", (req, res) => {
 
       // Iterate over each messaging event
       entry.messaging.forEach((assistantId, sessionId, webhook_event) => {
-        if (webhook_event.message) {
+      //if (webhook_event.message) {
+      //entry.messaging.forEach(function(event) {
+        if (event.message) {
           console.log("Received message");
           handleMessage(sender_psid, webhook_event.message);
           var payload = {
@@ -132,8 +137,8 @@ app.post("/webhook", (req, res) => {
               assistantId: assistantID,
               sessionId: sessionID,
               input: {
-                'message_type': 'text',
-                'text': 'Hello'
+                message_type: "text",
+                text: "Hello"
               }
             })
             .then(res => {
