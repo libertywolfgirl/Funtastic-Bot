@@ -126,7 +126,7 @@ app.post("/webhook", (req, res) => {
               console.log(err);
               //return res.status(err.code || 500).json(err);
             }
-            hndleMessage(webhook_event, data);
+            handleMessage();
           });
           /*assistant
             .message({
