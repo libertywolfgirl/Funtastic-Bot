@@ -111,7 +111,7 @@ app.post("/webhook", (req, res) => {
       console.log("Sender PSID: " + sender_psid);
 
       // Iterate over each messaging event
-      entry.messaging.forEach((assistantID, sessionID, webhook_event) => {
+      entry.messaging.forEach((assistantId, sessionId, webhook_event) => {
         if (webhook_event.message) {
           console.log("Received message");
           handleMessage(sender_psid, webhook_event.message);
