@@ -126,7 +126,6 @@ app.post("/webhook", (req, res) => {
               console.log(err);
               //return res.status(err.code || 500).json(err);
             }
-            handleMessage();
           });
           /*assistant
             .message({
@@ -140,6 +139,8 @@ app.post("/webhook", (req, res) => {
             .catch(err => {
               console.log(err);
             });*/
+        } else if (webhook_event.postback) {
+          handlePostback(sender_psid, webhook_event.postback);
         } else {
           console.log("Webhook received unknown event: ", webhook_event);
         }
