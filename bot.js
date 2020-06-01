@@ -98,24 +98,16 @@ app.post("/webhook", (req, res) => {
       console.log("Sender PSID: " + sender_psid);
 
       // Iterate over each messaging event
-      entry.messaging.forEach((assistantId, sessionId, webhook_event) => {
+      //entry.messaging.forEach((assistantId, sessionId, webhook_event) => {
       if (webhook_event.message) {
-      //entry.messaging.forEach(function(event) {
-        //if (event.message) {
+      entry.messaging.forEach(function(event) {
           console.log("Received message");
           handleMessage(sender_psid, webhook_event.message);
-          var payload = {
+          /*var payload = {
             assistantId: assistantID,
             sessionId: sessionID,
             input: webhook_event.message
           };
-          /*assistant.message(payload, function(err, result) {
-            if (err) {
-              console.log("error");
-              console.log(err);
-              //return res.status(err.code || 500).json(err);
-            }
-          });*/
           assistant
             .message({
               assistantId: assistantID,
@@ -130,7 +122,7 @@ app.post("/webhook", (req, res) => {
             })
             .catch(err => {
               console.log(err);
-            });
+            });*/
         } else if (webhook_event.postback) {
           handlePostback(sender_psid, webhook_event.postback);
         } else {
@@ -187,7 +179,7 @@ function sendTextMessage(recipientId, messageText) {
   callSendAPI(messageData);
 }
 
-function callSendAPI(messageData) {
+/*function callSendAPI(messageData) {
   request(
     {
       uri: "https://graph.facebook.com/v2.6/me/messages",
@@ -212,6 +204,30 @@ function callSendAPI(messageData) {
       }
     }
   );
+}*/
+
+function callSendAPI(sender_psid, response) {
+  // Construct the message body
+  let request_body = {
+    "recipient": {
+      "id": sender_psid
+    },
+    "message": response
+  }
+
+  // Send the HTTP request to the Messenger Platform
+  request({
+    "uri": "https://graph.facebook.com/v2.6/me/messages",
+    "qs": { "access_token": process.env.PAGE_ACCESS_TOKEN },
+    "method": "POST",
+    "json": request_body
+  }, (err, res, body) => {
+    if (!err) {
+      console.log('message sent!')
+    } else {
+      console.error("Unable to send message:" + err);
+    }
+  }); 
 }
 
 // Check if the event is a message or postback and
