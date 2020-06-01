@@ -59,22 +59,6 @@ app.get("/", function(req, res) {
   res.end();
 });
 
-// is this right?
-/*app.get("/api/session", function(req, res) {
-  assistant.createSession(
-    {
-      assistant_id: process.env.ASSISTANT_ID || "{assistant_id}"
-    },
-    function(error, response) {
-      if (error) {
-        return res.send(error);
-      } else {
-        return res.send(response);
-      }
-    }
-  );
-});*/
-
 const assistantID = process.env.ASSISTANT_ID;
 let sessionID;
 
@@ -107,7 +91,7 @@ app.post("/webhook", (req, res) => {
 
       // Gets the body of the webhook event
       let webhook_event = entry.messaging[0];
-      console.log(webhook_event);
+      //console.log(webhook_event);
 
       // Get the sender PSID
       let sender_psid = webhook_event.sender.id;
@@ -154,7 +138,7 @@ app.post("/webhook", (req, res) => {
         }
       });
     });
-
+ 
     // Assume all went well.
     //
     // You must send back a 200, within 20 seconds, to let us know
