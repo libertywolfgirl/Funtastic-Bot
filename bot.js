@@ -122,14 +122,12 @@ app.post("/webhook", (req, res) => {
               console.log(err);
             });
           receivedMessage(event, body);
-        } else if (webhook_event.postback) {
-          handlePostback(sender_psid, webhook_event.postback);
         } else {
           console.log("Webhook received unknown event: ", webhook_event);
         }
       });
     });
- 
+
     // Assume all went well.
     //
     // You must send back a 200, within 20 seconds, to let us know
@@ -154,8 +152,9 @@ function receivedMessage(event, watsonResponse) {
   );
   console.log(JSON.stringify(message));
 
-  var messageId = message.mid;
+  var messageId = message.id;
   var messageText = message.text;
+  console.log(message.text);
 
   if (messageText) {
     sendTextMessage(senderID, watsonResponse.output.text[0]);
@@ -220,7 +219,7 @@ function callSendAPI(messageData) {
     // Return a '404 Not Found' if event is not from a page subscription
     res.sendStatus(404);
   }
-});*/
+});
 
 function handleMessage(sender_psid, received_message) {
   let response;
@@ -284,7 +283,7 @@ function handlePostback(sender_psid, received_postback) {
   callSendAPI(sender_psid, response);
 }
 
-/*function callSendAPI(sender_psid, response) {
+function callSendAPI(sender_psid, response) {
   // Construct the message body
   let request_body = {
     recipient: {
@@ -309,10 +308,10 @@ function handlePostback(sender_psid, received_postback) {
       }
     }
   );
-}*/
+}
 
 // Message processing
-/*app.post("/webhook", function(req, res) {
+app.post("/webhook", function(req, res) {
   console.log(req.body);
   var data = req.body;
 
