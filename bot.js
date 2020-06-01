@@ -98,24 +98,16 @@ app.post("/webhook", (req, res) => {
       console.log("Sender PSID: " + sender_psid);
 
       // Iterate over each messaging event
-      entry.messaging.forEach((assistantId, sessionId, webhook_event) => {
-      if (webhook_event.message) {
-      //entry.messaging.forEach(function(event) {
-        //if (event.message) {
+      //entry.messaging.forEach((assistantId, sessionId, webhook_event) => {
+      entry.messaging.forEach(function(event) {
+        if (webhook_event.message) {
           console.log("Received message");
           handleMessage(sender_psid, webhook_event.message);
-          var payload = {
+          /*var payload = {
             assistantId: assistantID,
             sessionId: sessionID,
             input: webhook_event.message
           };
-          /*assistant.message(payload, function(err, result) {
-            if (err) {
-              console.log("error");
-              console.log(err);
-              //return res.status(err.code || 500).json(err);
-            }
-          });*/
           assistant
             .message({
               assistantId: assistantID,
@@ -130,7 +122,7 @@ app.post("/webhook", (req, res) => {
             })
             .catch(err => {
               console.log(err);
-            });
+            });*/
         } else if (webhook_event.postback) {
           handlePostback(sender_psid, webhook_event.postback);
         } else {
@@ -144,7 +136,7 @@ app.post("/webhook", (req, res) => {
     // You must send back a 200, within 20 seconds, to let us know
     // you've successfully received the callback. Otherwise, the request
     // will time out and we will keep trying to resend.
-    res.sendStatus(200);
+    //res.sendStatus(200);
   }
 });
 
