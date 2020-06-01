@@ -98,12 +98,10 @@ app.post("/webhook", (req, res) => {
       console.log("Sender PSID: " + sender_psid);
 
       // Iterate over each messaging event
-      //entry.messaging.forEach((assistantId, sessionId, webhook_event) => {
       entry.messaging.forEach(function(event) {
         if (webhook_event.message) {
           console.log("Received message");
-          handleMessage(sender_psid, webhook_event.message);
-          /*var payload = {
+          var payload = {
             assistantId: assistantID,
             sessionId: sessionID,
             input: webhook_event.message
@@ -122,7 +120,8 @@ app.post("/webhook", (req, res) => {
             })
             .catch(err => {
               console.log(err);
-            });*/
+            });
+          receivedMessage(event, body);
         } else if (webhook_event.postback) {
           handlePostback(sender_psid, webhook_event.postback);
         } else {
@@ -136,16 +135,16 @@ app.post("/webhook", (req, res) => {
     // You must send back a 200, within 20 seconds, to let us know
     // you've successfully received the callback. Otherwise, the request
     // will time out and we will keep trying to resend.
-    //res.sendStatus(200);
+    res.sendStatus(200);
   }
 });
 
 // Incoming events handling
-/*function receivedMessage(webhook_event, watsonResponse) {
-  var senderID = webhook_event.sender.id;
-  var recipientID = webhook_event.recipient.id;
-  var timeOfMessage = webhook_event.timestamp;
-  var message = webhook_event.message;
+function receivedMessage(event, watsonResponse) {
+  var senderID = event.sender.id;
+  var recipientID = event.recipient.id;
+  var timeOfMessage = event.timestamp;
+  var message = event.message;
 
   console.log(
     "Received message for user %d and page %d at %d with message:",
@@ -161,7 +160,7 @@ app.post("/webhook", (req, res) => {
   if (messageText) {
     sendTextMessage(senderID, watsonResponse.output.text[0]);
   }
-}*/
+}
 
 //////////////////////////
 // Sending helpers
