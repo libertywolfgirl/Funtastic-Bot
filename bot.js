@@ -106,7 +106,7 @@ app.post("/webhook", (req, res) => {
             sessionId: sessionID,
             input: webhook_event.message
           };
-          /*assistant
+          assistant
             .message({
               assistantId: assistantID,
               sessionId: sessionID,
@@ -117,11 +117,11 @@ app.post("/webhook", (req, res) => {
             })
             .then(res => {
               console.log(JSON.stringify(res.result, null, 2));
+              receivedMessage(event, body);
             })
             .catch(err => {
               console.log(err);
-            });*/
-          receivedMessage(event, body);
+            });
         } else {
           console.log("Webhook received unknown event: ", webhook_event);
         }
