@@ -10,13 +10,6 @@ const path = require("path");
 const AssistantV2 = require("ibm-watson/assistant/v2");
 const { IamAuthenticator } = require("ibm-watson/auth");
 
-/*const assistant = new Watson.ConversationV2({
-            apiKey: process.env.ASSISTANT_APIKEY,
-            url: process.env.ASSISTANT_URL,
-            version: 'v2',
-            version_date: '2017-05-26'
-        });*/
-
 const assistant = new AssistantV2({
   version: "2020-04-01",
   authenticator: new IamAuthenticator({
