@@ -106,7 +106,7 @@ app.post("/webhook", (req, res) => {
             sessionId: sessionID,
             input: webhook_event.message
           };
-          assistant
+          /*assistant
             .message({
               assistantId: assistantID,
               sessionId: sessionID,
@@ -120,7 +120,7 @@ app.post("/webhook", (req, res) => {
             })
             .catch(err => {
               console.log(err);
-            });
+            });*/
           receivedMessage(event, body);
         } else {
           console.log("Webhook received unknown event: ", webhook_event);
@@ -154,10 +154,9 @@ function receivedMessage(event, watsonResponse) {
 
   var messageId = message.id;
   var messageText = message.text;
-  console.log(message.text);
 
   if (messageText) {
-    sendTextMessage(senderID, watsonResponse.output.text[0]);
+    sendTextMessage(senderID, messageText);
   }
 }
 
