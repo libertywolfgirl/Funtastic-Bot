@@ -156,7 +156,7 @@ function receivedMessage(event, watsonResponse) {
 //////////////////////////
 // Sending helpers
 //////////////////////////
-function sendTextMessage(recipientId, messageText) {
+/*function sendTextMessage(recipientId, messageText) {
   var messageData = {
     recipient: {
       id: recipientId
@@ -166,8 +166,37 @@ function sendTextMessage(recipientId, messageText) {
     }
   };
   callSendAPI(messageData);
-}
+}*/
 
+function sendTextMessage(response) {
+  var messageData = null;
+  
+  if (response.intents && response.intents[0]) {
+    var intent = response.intents[0];
+    // Depending on the confidence of the response the app can return different
+    // messages.
+    // The confidence will vary depending on how well the system is trained. The
+    // service will always try to assign
+    // a class/intent to the input. If the confidence is low, then it suggests
+    // the service is unsure of the
+    // user's intent . In these cases it is usually best to return a
+    // disambiguation message
+    // ('I did not understand your intent, please rephrase your question',
+    // etc..)
+    if (intent.confidence >= 0.75) {
+      messageData = 'I understood your intent was ' + intent.intent;
+    } else if (intent.confidence >= 0.5) {
+      messageData = 'I think your intent was ' + intent.intent;
+    } else {
+      messageData = 'I did not understand your intent';
+    }
+  }
+  //response.output.text = messageData;
+  //return response;
+  
+  callSendAPI(messageData);
+}
+  
 function callSendAPI(messageData) {
   request(
     {
