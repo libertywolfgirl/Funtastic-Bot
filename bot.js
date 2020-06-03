@@ -165,7 +165,6 @@ function sendTextMessage(recipientId, messageText) {
       text: messageText
     }
   };
-
   callSendAPI(messageData);
 }
 
