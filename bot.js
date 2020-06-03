@@ -170,7 +170,7 @@ function receivedMessage(event, watsonResponse) {
 
 function sendTextMessage(recipientId, response) {
   var recipientId = recipientId;
-  let messageData = null;
+  let messageData;
   
   if (!response.output) {
     response.output = {};
@@ -200,7 +200,6 @@ function sendTextMessage(recipientId, response) {
     callSendAPI(messageData);
   }
   response.output.text = messageData;
-  return response;
 }
   
 function callSendAPI(messageData) {
