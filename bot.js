@@ -109,8 +109,8 @@ app.post("/webhook", (req, res) => {
               }
             })
             .then(res => {
-              console.log(JSON.stringify(res.result, null, 2));
-              receivedMessage(event, body);
+              sendTextMessage(JSON.stringify(res.result, null, 2));
+              //receivedMessage(event, body);
             })
             .catch(err => {
               console.log(err);
@@ -168,8 +168,8 @@ function receivedMessage(event, watsonResponse) {
   callSendAPI(messageData);
 }*/
 
-function sendTextMessage(recipientId, response) {
-  var recipientId = recipientId;
+function sendTextMessage(response) {
+  //var recipientId = recipientId;
   let messageData;
   
   if (response.intents && response.intents[0]) {
