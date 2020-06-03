@@ -168,8 +168,15 @@ function receivedMessage(event, watsonResponse) {
   callSendAPI(messageData);
 }*/
 
-function sendTextMessage(response) {
-  var messageData = null;
+function sendTextMessage(recipientId, response) {
+  var recipientId = recipientId;
+  let messageData = null;
+  
+  if (!response.output) {
+    response.output = {};
+  } else {
+    return response;
+  }
   
   if (response.intents && response.intents[0]) {
     var intent = response.intents[0];
@@ -190,11 +197,10 @@ function sendTextMessage(response) {
     } else {
       messageData = 'I did not understand your intent';
     }
+    callSendAPI(messageData);
   }
-  //response.output.text = messageData;
-  //return response;
-  
-  callSendAPI(messageData);
+  response.output.text = messageData;
+  return response;
 }
   
 function callSendAPI(messageData) {
