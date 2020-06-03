@@ -172,12 +172,6 @@ function sendTextMessage(recipientId, response) {
   var recipientId = recipientId;
   let messageData;
   
-  if (!response.output) {
-    response.output = {};
-  } else {
-    return response;
-  }
-  
   if (response.intents && response.intents[0]) {
     var intent = response.intents[0];
     // Depending on the confidence of the response the app can return different
@@ -199,7 +193,7 @@ function sendTextMessage(recipientId, response) {
     }
     callSendAPI(messageData);
   }
-  response.output.text = messageData;
+  //response.output.text = messageData;
 }
   
 function callSendAPI(messageData) {
