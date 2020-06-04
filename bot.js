@@ -54,7 +54,6 @@ app.get("/", function(req, res) {
 
 const assistantID = process.env.ASSISTANT_ID;
 let sessionID;
-let messageData;
 
 // Create session.
 assistant
@@ -110,7 +109,7 @@ app.post("/webhook", (req, res) => {
               receivedMessage(event, body);
             })*/
             .then(res => {
-              processResponse(res.result);
+              processResponse(event, res.result);
             })
             .catch(err => {
               console.log(err);
@@ -131,8 +130,9 @@ app.post("/webhook", (req, res) => {
 });
 
 // Process the response.
-function processResponse(response) {
-
+function processResponse(event, response) {
+  let messageResponse;
+  
   // If an intent was detected, log it out to the console.
   if (response.output.intents.length > 0) {
     console.log('Detected intent: #' + response.output.intents[0].intent);
@@ -143,19 +143,19 @@ function processResponse(response) {
   if (response.output.generic) {
     if (response.output.generic.length > 0) {
       if (response.output.generic[0].response_type === 'text') {
-        messageData = response.output.generic[0].text;
+        messageResponse = response.output.generic[0].text;
       }
     }
   }
-  receivedMessage(event, messageData);
+  receivedMessage(event, messageResponse);
 }
 
 // Incoming events handling
-/*function receivedMessage(event, watsonResponse) {
+function receivedMessage(event, messageResponse) {
   var senderID = event.sender.id;
   var recipientID = event.recipient.id;
   var timeOfMessage = event.timestamp;
-  var message = event.message;
+  var messageText = messageResponse;
 
   console.log(
     "Received message for user %d and page %d at %d with message:",
@@ -163,10 +163,10 @@ function processResponse(response) {
     recipientID,
     timeOfMessage
   );
-  console.log(JSON.stringify(message));
+  //console.log(JSON.stringify(message));
 
-  var messageId = message.id;
-  var messageText = message.text;
+  //var messageId = message.id;
+  //var messageText = message.text;
 
   if (messageText) {
     sendTextMessage(senderID, messageText);
@@ -188,7 +188,7 @@ function sendTextMessage(recipientId, messageText) {
   callSendAPI(messageData);
 }
 
-function sendTextMessage(response) {
+/*function sendTextMessage(response) {
   //var recipientId = recipientId;
   let messageData;
   
@@ -226,13 +226,13 @@ function callSendAPI(messageData) {
     },
     function(error, response, body) {
       if (!error && response.statusCode == 200) {
-        //var recipientId = body.recipient_id;
-        //var messageId = body.message_id;
+        var recipientId = body.recipient_id;
+        var messageId = body.message_id;
 
         console.log(
-          "Successfully sent generic message",
-          //messageId,
-          //recipientId
+          "Successfully sent generic message with id %s to recipient %s",
+          messageId,
+          recipientId
         );
       } else {
         console.error("Unable to send message.");
