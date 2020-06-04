@@ -54,6 +54,7 @@ app.get("/", function(req, res) {
 
 const assistantID = process.env.ASSISTANT_ID;
 let sessionID;
+let messageData;
 
 // Create session.
 assistant
@@ -132,7 +133,6 @@ app.post("/webhook", (req, res) => {
 // Process the response.
 function processResponse(response) {
 
-  let messageData;
   // If an intent was detected, log it out to the console.
   if (response.output.intents.length > 0) {
     console.log('Detected intent: #' + response.output.intents[0].intent);
@@ -144,11 +144,15 @@ function processResponse(response) {
     if (response.output.generic.length > 0) {
       if (response.output.generic[0].response_type === 'text') {
         messageData = response.output.generic[0].text;
-        return messageData;
+        
       }
     }
   }
-  callSendAPI(messageData);
+  //callSendAPI(messageData);
+  check();
+}
+function check() = {
+  console.log(messageData);
 }
 
 // Incoming events handling
