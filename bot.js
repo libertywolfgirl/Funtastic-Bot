@@ -55,22 +55,19 @@ app.get("/", function(req, res) {
 const assistantID = process.env.ASSISTANT_ID;
 let sessionID;
 
-// Create session.
+// Create session
 assistant
   .createSession({
     assistantId: assistantID
   })
   .then(res => {
     sessionID = res.result.session_id;
-    /*sendMessage({
-      messageType: 'text',
-      text: '', // start conversation with empty message
-    });*/
   })
   .catch(err => {
     console.log(err); // something went wrong
   });
 
+// Receive message
 app.post("/webhook", (req, res) => {
   // Parse the request body from the POST
   let body = req.body;
@@ -93,21 +90,12 @@ app.post("/webhook", (req, res) => {
       entry.messaging.forEach(function(event) {
         if (webhook_event.message) {
           console.log("Received message");
-          /*var payload = {
-            assistantId: assistantID,
-            sessionId: sessionID,
-            input: webhook_event.message
-          };*/
           assistant
             .message({
               assistantId: assistantID,
               sessionId: sessionID,
               input: webhook_event.message
             })
-            /*.then(res => {
-              console.log(JSON.stringify(res.result, null, 2));
-              receivedMessage(event, body);
-            })*/
             .then(res => {
               processResponse(event, res.result);
             })
@@ -163,19 +151,12 @@ function receivedMessage(event, messageResponse) {
     recipientID,
     timeOfMessage
   );
-  //console.log(JSON.stringify(message));
-
-  //var messageId = message.id;
-  //var messageText = message.text;
 
   if (messageText) {
     sendTextMessage(senderID, messageText);
   }
 }
 
-//////////////////////////
-// Sending helpers
-//////////////////////////
 function sendTextMessage(recipientId, messageText) {
   var messageData = {
     recipient: {
@@ -187,34 +168,6 @@ function sendTextMessage(recipientId, messageText) {
   };
   callSendAPI(messageData);
 }
-
-/*function sendTextMessage(response) {
-  //var recipientId = recipientId;
-  let messageData;
-  
-  if (response.intents && response.intents[0]) {
-    var intent = response.intents[0];
-    // Depending on the confidence of the response the app can return different
-    // messages.
-    // The confidence will vary depending on how well the system is trained. The
-    // service will always try to assign
-    // a class/intent to the input. If the confidence is low, then it suggests
-    // the service is unsure of the
-    // user's intent . In these cases it is usually best to return a
-    // disambiguation message
-    // ('I did not understand your intent, please rephrase your question',
-    // etc..)
-    if (intent.confidence >= 0.75) {
-      messageData = 'I understood your intent was ' + intent.intent;
-    } else if (intent.confidence >= 0.5) {
-      messageData = 'I think your intent was ' + intent.intent;
-    } else {
-      messageData = 'I did not understand your intent';
-    }
-    callSendAPI(messageData);
-  }
-  //response.output.text = messageData;
-}*/
   
 function callSendAPI(messageData) {
   request(
@@ -242,236 +195,6 @@ function callSendAPI(messageData) {
     }
   );
 }
-
-// Check if the event is a message or postback and
-// pass the event to the appropriate handler function
-/*if (webhook_event.message) {
-        handleMessage(sender_psid, webhook_event.message);
-      } else if (webhook_event.postback) {
-        handlePostback(sender_psid, webhook_event.postback);
-      }
-    });
-
-    // Return a '200 OK' response to all events
-    res.status(200).send("EVENT_RECEIVED");
-  } else {
-    // Return a '404 Not Found' if event is not from a page subscription
-    res.sendStatus(404);
-  }
-});
-
-function handleMessage(sender_psid, received_message) {
-  let response;
-
-  // Check if the message contains text
-  if (received_message.text) {
-    // Create the payload for a basic text message
-    response = {
-      text: `You sent the message: "${received_message.text}". Now send me an image!`
-    };
-  } else if (received_message.attachments) {
-    // Gets the URL of the message attachment
-    let attachment_url = received_message.attachments[0].payload.url;
-    response = {
-      attachment: {
-        type: "template",
-        payload: {
-          template_type: "generic",
-          elements: [
-            {
-              title: "Is this the right picture?",
-              subtitle: "Tap a button to answer.",
-              image_url: attachment_url,
-              buttons: [
-                {
-                  type: "postback",
-                  title: "Yes!",
-                  payload: "yes"
-                },
-                {
-                  type: "postback",
-                  title: "No!",
-                  payload: "no"
-                }
-              ]
-            }
-          ]
-        }
-      }
-    };
-  }
-
-  // Sends the response message
-  callSendAPI(sender_psid, response);
-}
-
-// Handles messaging_postbacks events
-function handlePostback(sender_psid, received_postback) {
-  let response;
-
-  // Get the payload for the postback
-  let payload = received_postback.payload;
-
-  // Set the response based on the postback payload
-  if (payload === "yes") {
-    response = { text: "Thanks!" };
-  } else if (payload === "no") {
-    response = { text: "Oops, try sending another image." };
-  }
-  // Send the message to acknowledge the postback
-  callSendAPI(sender_psid, response);
-}
-
-function callSendAPI(sender_psid, response) {
-  // Construct the message body
-  let request_body = {
-    recipient: {
-      id: sender_psid
-    },
-    message: response
-  };
-
-  // Send the HTTP request to the Messenger Platform
-  request(
-    {
-      uri: "https://graph.facebook.com/v2.6/me/messages",
-      qs: { access_token: process.env.PAGE_ACCESS_TOKEN },
-      method: "POST",
-      json: request_body
-    },
-    (err, res, body) => {
-      if (!err) {
-        console.log("message sent!");
-      } else {
-        console.error("Unable to send message:" + err);
-      }
-    }
-  );
-}
-
-// Message processing
-app.post("/webhook", function(req, res) {
-  console.log(req.body);
-  var data = req.body;
-
-  // Make sure this is a page subscription
-  if (data.object === "page") {
-    // Iterate over each entry - there may be multiple if batched
-    data.entry.forEach(function(entry) {
-      var pageID = entry.id;
-      var timeOfEvent = entry.time;
-      
-      // Gets the body of the webhook event
-      let webhook_event = entry.messaging[0];
-      console.log(webhook_event);
-
-      // Get the sender PSID
-      let sender_psid = webhook_event.sender.id;
-      console.log('Sender PSID: ' + sender_psid);
-
-      // Iterate over each messaging event
-      entry.messaging.forEach(function(event) {
-        if (event.message) {
-          console.log("Received message");
-          const assistantID = process.env.ASSISTANT_ID;
-          var payload = {
-            assistant_id: assistantID,
-            session_id: req.body.session_id,
-            input: {
-              message_type : 'text',
-              options : {
-                return_context : true
-                }
-            }
-          };
-          assistant.message(payload, function(err, data) {
-            if (err) {
-              console.log("error");
-              console.log(err);
-              return res.status(err.code || 500).json(err);
-            }
-            receivedMessage(event, data);
-          });
-        } else {
-          console.log("Webhook received unknown event: ", event);
-        }
-      });
-    });
-
-    // Assume all went well.
-    //
-    // You must send back a 200, within 20 seconds, to let us know
-    // you've successfully received the callback. Otherwise, the request
-    // will time out and we will keep trying to resend.
-    //res.sendStatus(200);
-  }
-});
-
-// Incoming events handling
-function receivedMessage(event, watsonResponse) {
-  var senderID = event.sender.id;
-  var recipientID = event.recipient.id;
-  var timeOfMessage = event.timestamp;
-  var message = event.message;
-
-  console.log(
-    "Received message for user %d and page %d at %d with message:",
-    senderID,
-    recipientID,
-    timeOfMessage
-  );
-  console.log(JSON.stringify(message));
-
-  var messageId = message.mid;
-  var messageText = message.text;
-
-  if (messageText) {
-    sendTextMessage(senderID, watsonResponse.output.text[0]);
-  }
-}
-
-//////////////////////////
-// Sending helpers
-//////////////////////////
-function sendTextMessage(recipientId, messageText) {
-  var messageData = {
-    recipient: {
-      id: recipientId
-    },
-    message: {
-      text: messageText
-    }
-  };
-
-  callSendAPI(messageData);
-}
-
-function callSendAPI(messageData) {
-  request(
-    {
-      uri: "https://graph.facebook.com/v2.6/me/messages",
-      qs: { access_token: process.env.PAGE_ACCESS_TOKEN },
-      method: "POST",
-      json: messageData
-    },
-    function(error, response, body) {
-      if (!error && response.statusCode == 200) {
-        var recipientId = body.recipient_id;
-        var messageId = body.message_id;
-
-        console.log(
-          "Successfully sent generic message with id %s to recipient %s",
-          messageId,
-          recipientId
-        );
-      } else {
-        console.error("Unable to send message.");
-        console.error(response);
-        console.error(error);
-      }
-    }
-  );
-}*/
 
 // Set Express to listen out for HTTP requests
 var server = app.listen(process.env.PORT || 3000, function() {
