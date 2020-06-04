@@ -147,7 +147,7 @@ function processResponse(response) {
       }
     }
   }
-  callSendAPI(messageData);
+  receivedMessage(event, messageData);
 }
 
 // Incoming events handling
