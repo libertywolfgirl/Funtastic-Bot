@@ -132,6 +132,7 @@ app.post("/webhook", (req, res) => {
 // Process the response.
 function processResponse(response) {
 
+  let messageData;
   // If an intent was detected, log it out to the console.
   if (response.output.intents.length > 0) {
     console.log('Detected intent: #' + response.output.intents[0].intent);
@@ -142,14 +143,16 @@ function processResponse(response) {
   if (response.output.generic) {
     if (response.output.generic.length > 0) {
       if (response.output.generic[0].response_type === 'text') {
-        console.log(response.output.generic[0].text);
+        messageData = response.output.generic[0].text;
+        return messageData;
       }
     }
   }
+  callSendAPI(messageData);
 }
 
 // Incoming events handling
-function receivedMessage(event, watsonResponse) {
+/*function receivedMessage(event, watsonResponse) {
   var senderID = event.sender.id;
   var recipientID = event.recipient.id;
   var timeOfMessage = event.timestamp;
@@ -174,7 +177,7 @@ function receivedMessage(event, watsonResponse) {
 //////////////////////////
 // Sending helpers
 //////////////////////////
-/*function sendTextMessage(recipientId, messageText) {
+function sendTextMessage(recipientId, messageText) {
   var messageData = {
     recipient: {
       id: recipientId
@@ -184,7 +187,7 @@ function receivedMessage(event, watsonResponse) {
     }
   };
   callSendAPI(messageData);
-}*/
+}
 
 function sendTextMessage(response) {
   //var recipientId = recipientId;
@@ -212,7 +215,7 @@ function sendTextMessage(response) {
     callSendAPI(messageData);
   }
   //response.output.text = messageData;
-}
+}*/
   
 function callSendAPI(messageData) {
   request(
@@ -224,13 +227,13 @@ function callSendAPI(messageData) {
     },
     function(error, response, body) {
       if (!error && response.statusCode == 200) {
-        var recipientId = body.recipient_id;
-        var messageId = body.message_id;
+        //var recipientId = body.recipient_id;
+        //var messageId = body.message_id;
 
         console.log(
-          "Successfully sent generic message with id %s to recipient %s",
-          messageId,
-          recipientId
+          "Successfully sent generic message",
+          //messageId,
+          //recipientId
         );
       } else {
         console.error("Unable to send message.");
