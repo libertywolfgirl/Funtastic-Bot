@@ -144,15 +144,10 @@ function processResponse(response) {
     if (response.output.generic.length > 0) {
       if (response.output.generic[0].response_type === 'text') {
         messageData = response.output.generic[0].text;
-        
       }
     }
   }
-  //callSendAPI(messageData);
-  check();
-}
-function check() = {
-  console.log(messageData);
+  callSendAPI(messageData);
 }
 
 // Incoming events handling
