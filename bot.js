@@ -81,7 +81,6 @@ app.post("/webhook", (req, res) => {
     body.entry.forEach(function(entry) {
       var pageID = entry.id;
       var timeOfEvent = entry.time;
-      console.log(entry);
       // Gets the body of the webhook event
       let webhook_event = entry.messaging[0];
       //console.log(webhook_event);
@@ -94,23 +93,23 @@ app.post("/webhook", (req, res) => {
       entry.messaging.forEach(function(event) {
         if (webhook_event.message) {
           console.log("Received message");
-          var payload = {
+          /*var payload = {
             assistantId: assistantID,
             sessionId: sessionID,
             input: webhook_event.message
-          };
+          };*/
           assistant
             .message({
               assistantId: assistantID,
               sessionId: sessionID,
-              input: {
-                message_type: "text",
-                text: "Hello"
-              }
+              input: webhook_event.message
             })
+            /*.then(res => {
+              console.log(JSON.stringify(res.result, null, 2));
+              receivedMessage(event, body);
+            })*/
             .then(res => {
-              sendTextMessage(JSON.stringify(res.result, null, 2));
-              //receivedMessage(event, body);
+              processResponse(res.result);
             })
             .catch(err => {
               console.log(err);
@@ -129,6 +128,25 @@ app.post("/webhook", (req, res) => {
     res.sendStatus(200);
   }
 });
+
+// Process the response.
+function processResponse(response) {
+
+  // If an intent was detected, log it out to the console.
+  if (response.output.intents.length > 0) {
+    console.log('Detected intent: #' + response.output.intents[0].intent);
+  }
+
+  // Display the output from assistant, if any. Supports only a single
+  // text response.
+  if (response.output.generic) {
+    if (response.output.generic.length > 0) {
+      if (response.output.generic[0].response_type === 'text') {
+        console.log(response.output.generic[0].text);
+      }
+    }
+  }
+}
 
 // Incoming events handling
 function receivedMessage(event, watsonResponse) {
